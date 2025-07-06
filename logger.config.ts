@@ -7,11 +7,9 @@ export const logger = createLogger({
   format: format.combine(format.timestamp(), format.json()),
   transports: [
     new LokiTransport({
-      host: 'http://localhost:3100',
+      host: process.env.LOKI_HOST || '',
       labels: { app: 'my-express', env: 'local' },
+      basicAuth: process.env.LOKI_BASIC_AUTH,
     }),
   ],
 });
-
-// console.log(process.env.LOKI_BASIC_AUTH);
-// host: 'https://logs-prod-035.grafana.net',
