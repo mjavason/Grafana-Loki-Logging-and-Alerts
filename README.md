@@ -1,55 +1,86 @@
-# Typescript-SF-Template-App
+# Grafana Loki Logging with a TypeScript Express API
 
-This is a single file TypeScript template app for faster idea testing and prototyping. It contains tests, one demo root API call, basic async error handling, one demo axios call, and .env support.
+This project demonstrates how to integrate Grafana Loki for logging in a TypeScript Express application. It includes a sample Express server with a few endpoints, and all logs are sent to a Grafana Loki instance.
 
-**Prerequisites**
+## Features
 
-- Node.js and npm (or yarn) installed on your system. You can download them from the [official Node.js website](https://nodejs.org).
+- **Express Server**: A simple Express server with a few API endpoints.
+- **TypeScript**: The entire codebase is written in TypeScript.
+- **Winston Logging**: Uses Winston for logging, with a custom transport for Grafana Loki.
+- **Grafana Loki Integration**: Sends logs to a Grafana Loki instance for easy viewing and analysis.
+- **Swagger API Documentation**: Includes Swagger for API documentation.
+- **Docker Compose for Grafana/Loki**: Includes a `docker-compose.yml` in the `promtail` directory to easily set up Grafana and Loki.
 
-**Installation**
+## Prerequisites
 
-1. Clone this repository using git:
+- **Node.js and npm (or yarn)**: You can download them from the [official Node.js website](https://nodejs.org).
+- **Docker and Docker Compose**: You can download them from the [official Docker website](https://www.docker.com/products/docker-desktop).
 
-   ```bash
-   git clone https://github.com/mjavason/...
-   ```
+## Setup and Installation
 
-2. Navigate to the project directory:
+1.  **Clone the repository:**
 
-   ```bash
-   cd project-name...
-   ```
+    ```bash
+    git clone <repository-url>
+    cd <repository-name>
+    ```
 
-3. Install the project's dependencies:
+2.  **Install dependencies:**
 
-   ```bash
-   npm install
-   ```
+    ```bash
+    npm install
+    ```
 
-**Running the project**
+3.  **Set up environment variables:**
 
-There are four main scripts defined in this project's `package.json` file:
+    Create a `.env` file in the root directory and add the following variables:
 
-- **npm run dev**
+    ```
+    PORT=5000
+    ```
 
-  - This script is used for development purposes. It will start a development server and enable hot reloading.
+4.  **Start Grafana and Loki:**
 
-- **npm run build**
+    Navigate to the `promtail` directory and run the following command:
 
-  - This script is used to build the project for production. It will bundle your code, minify files, and store them in a 'build' folder.
+    ```bash
+    docker-compose up -d
+    ```
 
-- **npm run start**
+    This will start Grafana and Loki in the background. You can access Grafana at `http://localhost:3000`.
 
-  - This script starts the application in production mode. It's what you would typically run after building the project for deployment.
+5.  **Start the application:**
 
-- **npm run test**
-  - This script runs the project's tests. Make sure you've installed the packages before running this script.
+    You can start the application in development mode (with hot reloading) or production mode.
 
-**API Documentation**
+    -   **Development:**
 
-After starting the API, you can access the documentation at the `/docs` route. Open your browser and go to [http://localhost:5000/docs](http://localhost:5000/docs) to view the API documentation.
+        ```bash
+        npm run dev
+        ```
 
-**Additional Notes**
+    -   **Production:**
 
-- Refer to the `package.json` file for any additional scripts specific to this project.
-- Configuration files (e.g., `.env`) might be required for the project to run properly. Take a look at the `env.sample` file for a guide. Make sure you have them set up according to your environment.
+        ```bash
+        npm run build
+        npm run start
+        ```
+
+    The application will be running at `http://localhost:5000`.
+
+## How It Works
+
+The application uses the `winston-loki` package to send logs to the Loki instance. The logger is configured in `logger.config.ts` to send logs to `http://localhost:3100`, which is the default address for Loki.
+
+The Express server has a few endpoints that generate logs. For example, the `GET /` endpoint logs an informational message and an error message. You can view these logs in Grafana by going to the "Explore" tab and selecting the "Loki" data source.
+
+## API Documentation
+
+The API documentation is generated using Swagger. You can access it at `http://localhost:5000/docs`.
+
+## Scripts
+
+-   `npm run dev`: Starts the application in development mode with hot reloading.
+-   `npm run build`: Compiles the TypeScript code to JavaScript.
+-   `npm run start`: Starts the application in production mode.
+-   `npm run test`: Runs the tests using Jest.
